@@ -10,7 +10,6 @@
     <style>
         body { background-color: #0b0f1a; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         
-        /* Estilo Glassmorphism com Efeito Hover e Brilho */
         .glass-card { 
             background: rgba(30, 41, 59, 0.5); 
             backdrop-filter: blur(12px); 
@@ -24,7 +23,6 @@
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.2); 
         }
         
-        /* Inputs e Formulários */
         .input-field { 
             background: #1e293b; 
             border: 1px solid #334155; 
@@ -42,16 +40,13 @@
         
         label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
         
-        /* Cores Dinâmicas dos Canais com Brilho */
         .text-ifood { color: #ef4444; text-shadow: 0 0 12px rgba(239, 68, 68, 0.4); } 
         .text-keeta { color: #facc15; text-shadow: 0 0 12px rgba(250, 204, 21, 0.4); } 
         .text-loja { color: #ffffff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
         
-        /* Utilitários */
         .hidden { display: none; }
         .btn-glow { transition: 0.3s; }
         .btn-glow:hover { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); transform: scale(1.02); }
-        .btn-glow:active { transform: scale(0.98); }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -94,9 +89,9 @@
         <header class="mb-10 flex justify-between items-end">
             <div>
                 <h1 class="text-3xl font-extrabold tracking-tight">Dashboard de Performance</h1>
-                <p id="userStatus" class="text-slate-400 text-sm">Carregando perfil...</p>
+                <p class="text-slate-400">Análise dinâmica de canais de venda</p>
             </div>
-            <button id="btnLogout" class="text-[10px] font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest border border-slate-800 px-4 py-2 rounded-lg transition-all">Sair do Sistema</button>
+            <button id="btnLogout" class="text-[10px] font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest border border-slate-800 px-4 py-2 rounded-lg transition-all">Sair</button>
         </header>
 
         <section class="glass-card p-6 rounded-2xl mb-8 border-t-4 border-blue-500">
@@ -105,51 +100,32 @@
             </h2>
             
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div>
-                    <label>Mês</label>
+                <div><label>Mês</label>
                     <select id="selectMes" class="input-field">
-                        <option value="01">Janeiro</option><option value="02">Fevereiro</option>
-                        <option value="03">Março</option><option value="04">Abril</option>
-                        <option value="05">Maio</option><option value="06">Junho</option>
-                        <option value="07">Julho</option><option value="08">Agosto</option>
-                        <option value="09">Setembro</option><option value="10">Outubro</option>
-                        <option value="11">Novembro</option><option value="12">Dezembro</option>
+                        <option value="01">Janeiro</option><option value="02">Fevereiro</option><option value="03">Março</option>
+                        <option value="04">Abril</option><option value="05">Maio</option><option value="06">Junho</option>
+                        <option value="07">Julho</option><option value="08">Agosto</option><option value="09">Setembro</option>
+                        <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
                     </select>
                 </div>
-                <div>
-                    <label>Ano</label>
+                <div><label>Ano</label>
                     <select id="selectAno" class="input-field">
-                        <option value="2024">2024</option>
-                        <option value="2025" selected>2025</option>
-                        <option value="2026">2026</option>
+                        <option value="2024">2024</option><option value="2025" selected>2025</option><option value="2026">2026</option>
                     </select>
                 </div>
-                <div>
-                    <label>iFood (R$)</label>
-                    <input type="number" id="valIfood" placeholder="0,00" class="input-field">
-                </div>
-                <div>
-                    <label>Keeta (R$)</label>
-                    <input type="number" id="valKeeta" placeholder="0,00" class="input-field">
-                </div>
-                <div>
-                    <label>Loja Física (R$)</label>
-                    <input type="number" id="valLoja" placeholder="0,00" class="input-field">
-                </div>
+                <div><label>iFood (R$)</label><input type="number" id="valIfood" placeholder="0,00" class="input-field"></div>
+                <div><label>Keeta (R$)</label><input type="number" id="valKeeta" placeholder="0,00" class="input-field"></div>
+                <div><label>Loja Física (R$)</label><input type="number" id="valLoja" placeholder="0,00" class="input-field"></div>
             </div>
             <div class="flex gap-3 mt-6">
-                <button id="btnSalvar" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none btn-glow">
-                    Salvar Registro
-                </button>
-                <button id="btnLimpar" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline transition-colors">
-                    Limpar Histórico
-                </button>
+                <button id="btnSalvar" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none btn-glow">Salvar Registro</button>
+                <button id="btnLimpar" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline">Limpar Histórico</button>
             </div>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Faturamento do Período</span>
+                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Faturamento Mês Atual</span>
                 <div id="totalGeral" class="text-3xl font-bold mt-1 text-white">R$ 0,00</div>
             </div>
             <div class="glass-card p-6 rounded-2xl border-b-4 border-slate-700">
@@ -157,7 +133,7 @@
                 <div id="bestChannel" class="text-2xl font-bold mt-1 transition-colors duration-300">-</div>
             </div>
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Crescimento vs Anterior</span>
+                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Crescimento Mês vs Anterior</span>
                 <div id="crescimentoPorcentagem" class="text-3xl font-bold mt-1 text-slate-500">--</div>
             </div>
         </div>
@@ -179,7 +155,6 @@
         import { getFirestore, doc, setDoc, getDocs, collection, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // CONFIGURAÇÕES DO SEU FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBe16h9VH99V2cF-pJQVo5SJPha6uWsWJ0",
             authDomain: "dash-4c84d.firebaseapp.com",
@@ -197,8 +172,7 @@
         let charts = {};
         let isLoginMode = true;
 
-        // --- LÓGICA DE AUTENTICAÇÃO ---
-
+        // AUTH
         const btnToggleAuth = document.getElementById('btnToggleAuth');
         btnToggleAuth.onclick = () => {
             isLoginMode = !isLoginMode;
@@ -212,27 +186,28 @@
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPass').value;
             if(!email || !pass) return alert("Por favor, preencha e-mail e senha.");
-
             try {
                 if(isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
                 else await createUserWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert("Erro de Acesso: " + e.message); }
+            } catch (e) { alert("Erro: " + e.message); }
         };
 
         document.getElementById('btnForgot').onclick = async () => {
             const email = document.getElementById('authEmail').value;
-            if(!email) return alert("Insira seu e-mail para receber o link de recuperação.");
+            if(!email) return alert("Digite seu e-mail no campo acima para receber o link de recuperação.");
             try {
                 await sendPasswordResetEmail(auth, email);
-                alert("E-mail de recuperação enviado! Verifique sua caixa de entrada.");
+                alert("E-mail de recuperação enviado!");
             } catch (e) { alert("Erro: " + e.message); }
         };
 
         document.getElementById('btnLogout').onclick = () => signOut(auth);
 
-        // --- LÓGICA DO DASHBOARD ---
-
+        // DASHBOARD
         function inicializarGraficos() {
+            if(charts.line) charts.line.destroy();
+            if(charts.pie) charts.pie.destroy();
+
             const ctxL = document.getElementById('lineChart').getContext('2d');
             const ctxP = document.getElementById('pieChart').getContext('2d');
 
@@ -243,26 +218,16 @@
                     { label: 'Keeta', borderColor: '#facc15', data: [], tension: 0.4, borderWidth: 3 },
                     { label: 'Loja Física', borderColor: '#ffffff', data: [], tension: 0.4, borderWidth: 3 }
                 ]},
-                options: { 
-                    responsive: true,
-                    plugins: { legend: { labels: { color: '#94a3b8' } } },
-                    scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } }
-                }
+                options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } } }
             });
 
             charts.pie = new Chart(ctxP, {
                 type: 'doughnut',
                 data: { labels: ['iFood', 'Keeta', 'Loja'], datasets: [{ data: [0,0,0], backgroundColor: ['#ef4444', '#facc15', '#ffffff'], borderWidth: 0 }] },
-                options: { 
-                    cutout: '75%',
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { color: '#94a3b8' } },
-                        tooltip: { callbacks: { label: (ctx) => {
-                            let total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                            return `${ctx.label}: ${((ctx.parsed/total)*100).toFixed(1)}%`;
-                        }}}
-                    }
-                }
+                options: { cutout: '75%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } }, tooltip: { callbacks: { label: (ctx) => {
+                    let total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                    return `${ctx.label}: ${((ctx.parsed/total)*100).toFixed(1)}%`;
+                }}}}}
             });
         }
 
@@ -275,17 +240,12 @@
             const valL = parseFloat(document.getElementById('valLoja').value) || 0;
             const periodoKey = `${ano}-${mes}`;
 
-            try {
-                await setDoc(doc(db, "usuarios", user.uid, "vendas", periodoKey), {
-                    key: periodoKey,
-                    label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
-                    ifood: valI, keeta: valK, loja: valL
-                });
-                carregarDados();
-                document.getElementById('valIfood').value = '';
-                document.getElementById('valKeeta').value = '';
-                document.getElementById('valLoja').value = '';
-            } catch (e) { console.error(e); }
+            await setDoc(doc(db, "usuarios", user.uid, "vendas", periodoKey), {
+                key: periodoKey,
+                label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
+                ifood: valI, keeta: valK, loja: valL
+            });
+            carregarDados();
         };
 
         async function carregarDados() {
@@ -298,7 +258,6 @@
 
         function atualizarInterface() {
             if (dadosVendas.length === 0) return;
-            
             charts.line.data.labels = dadosVendas.map(d => d.label);
             charts.line.data.datasets[0].data = dadosVendas.map(d => d.ifood);
             charts.line.data.datasets[1].data = dadosVendas.map(d => d.keeta);
@@ -312,7 +271,6 @@
             const canais = { 'iFood': ultimo.ifood, 'Keeta': ultimo.keeta, 'Loja Física': ultimo.loja };
             const vencedor = Object.keys(canais).reduce((a, b) => canais[a] > canais[b] ? a : b);
             const bestEl = document.getElementById('bestChannel');
-            
             bestEl.innerText = total > 0 ? vencedor : "-";
             bestEl.classList.remove('text-ifood', 'text-keeta', 'text-loja');
             if(total > 0) {
@@ -329,13 +287,12 @@
                 crescEl.innerText = `${perc > 0 ? '↑' : '↓'} ${Math.abs(perc).toFixed(1)}%`;
                 crescEl.className = `text-3xl font-bold mt-1 ${perc >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
             }
-
             charts.pie.data.datasets[0].data = [ultimo.ifood, ultimo.keeta, ultimo.loja];
             charts.pie.update();
         }
 
         document.getElementById('btnLimpar').onclick = async () => {
-            if(confirm("Deseja apagar permanentemente todos os seus dados da nuvem?")) {
+            if(confirm("Apagar todos os dados da nuvem?")) {
                 const user = auth.currentUser;
                 const q = query(collection(db, "usuarios", user.uid, "vendas"));
                 const snapshot = await getDocs(q);
@@ -345,12 +302,10 @@
             }
         };
 
-        // MONITOR DE ESTADO DO USUÁRIO
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('authContainer').classList.add('hidden');
                 document.getElementById('mainDashboard').classList.remove('hidden');
-                document.getElementById('userStatus').innerText = `Analista: ${user.email}`;
                 inicializarGraficos();
                 carregarDados();
             } else {
