@@ -9,52 +9,83 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b0f1a; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
         
-        /* Efeito Hover e Brilho nos Cards */
-        .glass-card:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+        /* Estilo Glassmorphism com Efeito Hover e Brilho */
+        .glass-card { 
+            background: rgba(30, 41, 59, 0.5); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .glass-card:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(59, 130, 246, 0.5); 
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.2); 
+        }
         
-        .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: white; width: 100%; outline: none; transition: border 0.2s; }
-        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+        /* Inputs e Formulários */
+        .input-field { 
+            background: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 8px; 
+            padding: 10px; 
+            color: white; 
+            width: 100%; 
+            outline: none; 
+            transition: all 0.2s; 
+        }
+        .input-field:focus { 
+            border-color: #3b82f6; 
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.3); 
+        }
         
         label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
         
-        /* Classes de cores dinâmicas para o vencedor (Mantidas conforme seu original) */
-        .text-ifood { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3); } 
-        .text-keeta { color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.3); } 
-        .text-loja { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+        /* Cores Dinâmicas dos Canais com Brilho */
+        .text-ifood { color: #ef4444; text-shadow: 0 0 12px rgba(239, 68, 68, 0.4); } 
+        .text-keeta { color: #facc15; text-shadow: 0 0 12px rgba(250, 204, 21, 0.4); } 
+        .text-loja { color: #ffffff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
         
+        /* Utilitários */
         .hidden { display: none; }
-        
-        /* Brilho no botão de login */
-        .btn-glow { transition: 0.3s; position: relative; overflow: hidden; }
-        .btn-glow:hover { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
+        .btn-glow { transition: 0.3s; }
+        .btn-glow:hover { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); transform: scale(1.02); }
+        .btn-glow:active { transform: scale(0.98); }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div id="authContainer" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0f1a] px-4">
-        <div class="glass-card p-8 rounded-3xl w-full max-w-md border-t-4 border-blue-500 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div class="glass-card p-8 rounded-3xl w-full max-w-md border-t-4 border-blue-500 shadow-[0_0_60px_rgba(0,0,0,0.6)]">
             <div class="text-center mb-8">
-                <h1 id="authTitle" class="text-2xl font-bold tracking-tight">Bem-vindo ao Premium</h1>
-                <p id="authSubtitle" class="text-slate-400 text-sm mt-2">Acesse sua inteligência de vendas</p>
+                <h1 id="authTitle" class="text-2xl font-bold tracking-tight">Acesso Premium</h1>
+                <p id="authSubtitle" class="text-slate-400 text-sm mt-2">Inteligência de Vendas em Nuvem</p>
             </div>
+            
             <div class="space-y-4">
                 <div>
-                    <label>E-mail Corporativo</label>
+                    <label>E-mail de Usuário</label>
                     <input type="email" id="authEmail" class="input-field" placeholder="seu@email.com">
                 </div>
                 <div>
-                    <label>Senha de Acesso</label>
+                    <label>Senha</label>
                     <input type="password" id="authPass" class="input-field" placeholder="••••••••">
                 </div>
-                <button id="btnAuth" class="btn-glow w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl mt-4">
-                    Entrar no Sistema
+                
+                <button id="btnAuth" class="btn-glow w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl mt-4 transition-all">
+                    Entrar no Dashboard
                 </button>
-                <p class="text-center text-sm text-slate-400">
-                    <span id="toggleText">Novo por aqui?</span>
-                    <button id="btnToggleAuth" class="text-blue-400 font-bold ml-1 hover:underline">Criar Conta</button>
-                </p>
+
+                <div class="pt-4 space-y-3">
+                    <p class="text-center text-sm text-slate-400">
+                        <span id="toggleText">Não possui conta?</span>
+                        <button id="btnToggleAuth" class="text-blue-400 font-bold ml-1 hover:underline">Criar agora</button>
+                    </p>
+                    <p class="text-center">
+                        <button id="btnForgot" class="text-xs text-slate-500 hover:text-white transition underline">Esqueci minha senha</button>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -63,9 +94,9 @@
         <header class="mb-10 flex justify-between items-end">
             <div>
                 <h1 class="text-3xl font-extrabold tracking-tight">Dashboard de Performance</h1>
-                <p class="text-slate-400">Análise dinâmica de canais de venda</p>
+                <p id="userStatus" class="text-slate-400 text-sm">Carregando perfil...</p>
             </div>
-            <button id="btnLogout" class="text-[10px] font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md transition-all">Sair</button>
+            <button id="btnLogout" class="text-[10px] font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest border border-slate-800 px-4 py-2 rounded-lg transition-all">Sair do Sistema</button>
         </header>
 
         <section class="glass-card p-6 rounded-2xl mb-8 border-t-4 border-blue-500">
@@ -110,7 +141,7 @@
                 <button id="btnSalvar" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none btn-glow">
                     Salvar Registro
                 </button>
-                <button id="btnLimpar" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline">
+                <button id="btnLimpar" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline transition-colors">
                     Limpar Histórico
                 </button>
             </div>
@@ -146,8 +177,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDocs, collection, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+        // CONFIGURAÇÕES DO SEU FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBe16h9VH99V2cF-pJQVo5SJPha6uWsWJ0",
             authDomain: "dash-4c84d.firebaseapp.com",
@@ -165,36 +197,46 @@
         let charts = {};
         let isLoginMode = true;
 
-        // AUTH UI TOGGLE
+        // --- LÓGICA DE AUTENTICAÇÃO ---
+
         const btnToggleAuth = document.getElementById('btnToggleAuth');
         btnToggleAuth.onclick = () => {
             isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').innerText = isLoginMode ? "Bem-vindo ao Premium" : "Criar sua conta";
-            document.getElementById('btnAuth').innerText = isLoginMode ? "Entrar no Sistema" : "Finalizar Cadastro";
-            document.getElementById('toggleText').innerText = isLoginMode ? "Novo por aqui?" : "Já tem conta?";
-            btnToggleAuth.innerText = isLoginMode ? "Criar Conta" : "Fazer Login";
+            document.getElementById('authTitle').innerText = isLoginMode ? "Acesso Premium" : "Criar Nova Conta";
+            document.getElementById('btnAuth').innerText = isLoginMode ? "Entrar no Dashboard" : "Finalizar Cadastro";
+            document.getElementById('toggleText').innerText = isLoginMode ? "Não possui conta?" : "Já possui conta?";
+            btnToggleAuth.innerText = isLoginMode ? "Criar agora" : "Fazer Login";
         };
 
-        // LOGIN / REGISTER ACTION
         document.getElementById('btnAuth').onclick = async () => {
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPass').value;
-            if(!email || !pass) return alert("Preencha os campos!");
+            if(!email || !pass) return alert("Por favor, preencha e-mail e senha.");
 
             try {
                 if(isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
                 else await createUserWithEmailAndPassword(auth, email, pass);
+            } catch (e) { alert("Erro de Acesso: " + e.message); }
+        };
+
+        document.getElementById('btnForgot').onclick = async () => {
+            const email = document.getElementById('authEmail').value;
+            if(!email) return alert("Insira seu e-mail para receber o link de recuperação.");
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("E-mail de recuperação enviado! Verifique sua caixa de entrada.");
             } catch (e) { alert("Erro: " + e.message); }
         };
 
         document.getElementById('btnLogout').onclick = () => signOut(auth);
 
-        // DASHBOARD LOGIC
-        function inicializarGraficos() {
-            const ctxLine = document.getElementById('lineChart').getContext('2d');
-            const ctxPie = document.getElementById('pieChart').getContext('2d');
+        // --- LÓGICA DO DASHBOARD ---
 
-            charts.line = new Chart(ctxLine, {
+        function inicializarGraficos() {
+            const ctxL = document.getElementById('lineChart').getContext('2d');
+            const ctxP = document.getElementById('pieChart').getContext('2d');
+
+            charts.line = new Chart(ctxL, {
                 type: 'line',
                 data: { labels: [], datasets: [
                     { label: 'iFood', borderColor: '#ef4444', data: [], tension: 0.4, borderWidth: 3 },
@@ -203,12 +245,12 @@
                 ]},
                 options: { 
                     responsive: true,
-                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } },
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
                     scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } }
                 }
             });
 
-            charts.pie = new Chart(ctxPie, {
+            charts.pie = new Chart(ctxP, {
                 type: 'doughnut',
                 data: { labels: ['iFood', 'Keeta', 'Loja'], datasets: [{ data: [0,0,0], backgroundColor: ['#ef4444', '#facc15', '#ffffff'], borderWidth: 0 }] },
                 options: { 
@@ -228,20 +270,22 @@
             const user = auth.currentUser;
             const mes = document.getElementById('selectMes').value;
             const ano = document.getElementById('selectAno').value;
-            const ifood = parseFloat(document.getElementById('valIfood').value) || 0;
-            const keeta = parseFloat(document.getElementById('valKeeta').value) || 0;
-            const loja = parseFloat(document.getElementById('valLoja').value) || 0;
+            const valI = parseFloat(document.getElementById('valIfood').value) || 0;
+            const valK = parseFloat(document.getElementById('valKeeta').value) || 0;
+            const valL = parseFloat(document.getElementById('valLoja').value) || 0;
             const periodoKey = `${ano}-${mes}`;
 
-            await setDoc(doc(db, "usuarios", user.uid, "vendas", periodoKey), {
-                key: periodoKey,
-                label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
-                ifood, keeta, loja
-            });
-            carregarDados();
-            document.getElementById('valIfood').value = '';
-            document.getElementById('valKeeta').value = '';
-            document.getElementById('valLoja').value = '';
+            try {
+                await setDoc(doc(db, "usuarios", user.uid, "vendas", periodoKey), {
+                    key: periodoKey,
+                    label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
+                    ifood: valI, keeta: valK, loja: valL
+                });
+                carregarDados();
+                document.getElementById('valIfood').value = '';
+                document.getElementById('valKeeta').value = '';
+                document.getElementById('valLoja').value = '';
+            } catch (e) { console.error(e); }
         };
 
         async function carregarDados() {
@@ -254,6 +298,7 @@
 
         function atualizarInterface() {
             if (dadosVendas.length === 0) return;
+            
             charts.line.data.labels = dadosVendas.map(d => d.label);
             charts.line.data.datasets[0].data = dadosVendas.map(d => d.ifood);
             charts.line.data.datasets[1].data = dadosVendas.map(d => d.keeta);
@@ -267,6 +312,7 @@
             const canais = { 'iFood': ultimo.ifood, 'Keeta': ultimo.keeta, 'Loja Física': ultimo.loja };
             const vencedor = Object.keys(canais).reduce((a, b) => canais[a] > canais[b] ? a : b);
             const bestEl = document.getElementById('bestChannel');
+            
             bestEl.innerText = total > 0 ? vencedor : "-";
             bestEl.classList.remove('text-ifood', 'text-keeta', 'text-loja');
             if(total > 0) {
@@ -289,7 +335,7 @@
         }
 
         document.getElementById('btnLimpar').onclick = async () => {
-            if(confirm("Apagar todos os dados da nuvem?")) {
+            if(confirm("Deseja apagar permanentemente todos os seus dados da nuvem?")) {
                 const user = auth.currentUser;
                 const q = query(collection(db, "usuarios", user.uid, "vendas"));
                 const snapshot = await getDocs(q);
@@ -299,10 +345,12 @@
             }
         };
 
+        // MONITOR DE ESTADO DO USUÁRIO
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('authContainer').classList.add('hidden');
                 document.getElementById('mainDashboard').classList.remove('hidden');
+                document.getElementById('userStatus').innerText = `Analista: ${user.email}`;
                 inicializarGraficos();
                 carregarDados();
             } else {
