@@ -3,107 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Intel | Login</title>
+    <title>Sales Intelligence Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b0f1a; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
-        .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: white; width: 100%; outline: none; }
-        .input-field:focus { border-color: #3b82f6; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+        
+        /* Efeito Hover e Brilho nos Cards */
+        .glass-card:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+        
+        .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: white; width: 100%; outline: none; transition: border 0.2s; }
+        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+        
+        label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+        
+        /* Classes de cores dinâmicas para o vencedor (Mantidas conforme seu original) */
+        .text-ifood { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3); } 
+        .text-keeta { color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.3); } 
+        .text-loja { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+        
         .hidden { display: none; }
-        /* Estilo para o canal vencedor */
-        .text-ifood { color: #ef4444; }
-        .text-keeta { color: #facc15; }
-        .text-loja { color: #ffffff; }
+        
+        /* Brilho no botão de login */
+        .btn-glow { transition: 0.3s; position: relative; overflow: hidden; }
+        .btn-glow:hover { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div id="authContainer" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0f1a]">
-        <div class="glass-card p-8 rounded-3xl w-full max-w-md shadow-2xl border-t-4 border-blue-500">
+    <div id="authContainer" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0f1a] px-4">
+        <div class="glass-card p-8 rounded-3xl w-full max-w-md border-t-4 border-blue-500 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
             <div class="text-center mb-8">
-                <h1 id="authTitle" class="text-2xl font-bold">Bem-vindo de volta</h1>
-                <p id="authSubtitle" class="text-slate-400 text-sm">Acesse sua inteligência de vendas</p>
+                <h1 id="authTitle" class="text-2xl font-bold tracking-tight">Bem-vindo ao Premium</h1>
+                <p id="authSubtitle" class="text-slate-400 text-sm mt-2">Acesse sua inteligência de vendas</p>
             </div>
-            
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs font-bold uppercase text-slate-500 mb-1 block">E-mail</label>
-                    <input type="email" id="authEmail" class="input-field" placeholder="exemplo@email.com">
+                    <label>E-mail Corporativo</label>
+                    <input type="email" id="authEmail" class="input-field" placeholder="seu@email.com">
                 </div>
                 <div>
-                    <label class="text-xs font-bold uppercase text-slate-500 mb-1 block">Senha</label>
+                    <label>Senha de Acesso</label>
                     <input type="password" id="authPass" class="input-field" placeholder="••••••••">
                 </div>
-                <button id="btnAuth" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all mt-4">
-                    Entrar no Dashboard
+                <button id="btnAuth" class="btn-glow w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl mt-4">
+                    Entrar no Sistema
                 </button>
                 <p class="text-center text-sm text-slate-400">
-                    <span id="toggleText">Não tem uma conta?</span>
-                    <button id="btnToggleAuth" class="text-blue-400 font-bold ml-1 hover:underline">Criar agora</button>
+                    <span id="toggleText">Novo por aqui?</span>
+                    <button id="btnToggleAuth" class="text-blue-400 font-bold ml-1 hover:underline">Criar Conta</button>
                 </p>
             </div>
         </div>
     </div>
 
     <div id="mainDashboard" class="max-w-6xl mx-auto hidden">
-        <header class="mb-10 flex justify-between items-center">
+        <header class="mb-10 flex justify-between items-end">
             <div>
-                <h1 class="text-3xl font-extrabold tracking-tight">Performance Pro</h1>
-                <p id="userEmailDisplay" class="text-slate-400 text-sm"></p>
+                <h1 class="text-3xl font-extrabold tracking-tight">Dashboard de Performance</h1>
+                <p class="text-slate-400">Análise dinâmica de canais de venda</p>
             </div>
-            <button id="btnLogout" class="text-xs font-bold text-red-400 hover:text-red-300 uppercase tracking-widest bg-red-400/10 px-4 py-2 rounded-lg">Sair</button>
+            <button id="btnLogout" class="text-[10px] font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md transition-all">Sair</button>
         </header>
 
         <section class="glass-card p-6 rounded-2xl mb-8 border-t-4 border-blue-500">
             <h2 class="text-sm font-bold mb-6 text-blue-400 flex items-center gap-2">
-                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LANÇAMENTO EM NUVEM
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LANÇAMENTO DE RESULTADOS
             </h2>
+            
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div><label class="text-[10px] text-slate-500 font-bold mb-1">MÊS</label>
-                    <select id="selectMes" class="input-field text-sm">
-                        <option value="01">Janeiro</option><option value="02">Fevereiro</option><option value="03">Março</option>
-                        <option value="04">Abril</option><option value="05">Maio</option><option value="06">Junho</option>
-                        <option value="07">Julho</option><option value="08">Agosto</option><option value="09">Setembro</option>
-                        <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+                <div>
+                    <label>Mês</label>
+                    <select id="selectMes" class="input-field">
+                        <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+                        <option value="03">Março</option><option value="04">Abril</option>
+                        <option value="05">Maio</option><option value="06">Junho</option>
+                        <option value="07">Julho</option><option value="08">Agosto</option>
+                        <option value="09">Setembro</option><option value="10">Outubro</option>
+                        <option value="11">Novembro</option><option value="12">Dezembro</option>
                     </select>
                 </div>
-                <div><label class="text-[10px] text-slate-500 font-bold mb-1">ANO</label>
-                    <select id="selectAno" class="input-field text-sm">
-                        <option value="2024">2024</option><option value="2025" selected>2025</option><option value="2026">2026</option>
+                <div>
+                    <label>Ano</label>
+                    <select id="selectAno" class="input-field">
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
                     </select>
                 </div>
-                <div><label class="text-[10px] text-slate-500 font-bold mb-1">IFOOD (R$)</label><input type="number" id="valIfood" class="input-field text-sm"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold mb-1">KEETA (R$)</label><input type="number" id="valKeeta" class="input-field text-sm"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold mb-1">LOJA (R$)</label><input type="number" id="valLoja" class="input-field text-sm"></div>
+                <div>
+                    <label>iFood (R$)</label>
+                    <input type="number" id="valIfood" placeholder="0,00" class="input-field">
+                </div>
+                <div>
+                    <label>Keeta (R$)</label>
+                    <input type="number" id="valKeeta" placeholder="0,00" class="input-field">
+                </div>
+                <div>
+                    <label>Loja Física (R$)</label>
+                    <input type="number" id="valLoja" placeholder="0,00" class="input-field">
+                </div>
             </div>
-            <button id="btnSalvar" class="mt-6 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all w-full md:w-auto">Sincronizar Dados</button>
+            <div class="flex gap-3 mt-6">
+                <button id="btnSalvar" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none btn-glow">
+                    Salvar Registro
+                </button>
+                <button id="btnLimpar" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline">
+                    Limpar Histórico
+                </button>
+            </div>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-1">Faturamento Período</span>
-                <div id="totalGeral" class="text-3xl font-bold">R$ 0,00</div>
+                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Faturamento do Período</span>
+                <div id="totalGeral" class="text-3xl font-bold mt-1 text-white">R$ 0,00</div>
             </div>
             <div class="glass-card p-6 rounded-2xl border-b-4 border-slate-700">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-1">Canal Líder</span>
-                <div id="bestChannel" class="text-2xl font-bold">-</div>
+                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Canal com Maior Venda</span>
+                <div id="bestChannel" class="text-2xl font-bold mt-1 transition-colors duration-300">-</div>
             </div>
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-1">Crescimento %</span>
-                <div id="crescimentoPorcentagem" class="text-3xl font-bold">--</div>
+                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Crescimento vs Anterior</span>
+                <div id="crescimentoPorcentagem" class="text-3xl font-bold mt-1 text-slate-500">--</div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="glass-card p-6 rounded-2xl lg:col-span-2">
-                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">Desempenho Histórico</h3>
+                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">Desempenho</h3>
                 <canvas id="lineChart" height="150"></canvas>
             </div>
             <div class="glass-card p-6 rounded-2xl">
-                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">Share por Canal</h3>
+                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">SHARE POR CANAL</h3>
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
@@ -111,7 +145,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -127,65 +161,69 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let isLoginMode = true;
         let dadosVendas = [];
         let charts = {};
+        let isLoginMode = true;
 
-        // Alternar Login / Cadastro
-        document.getElementById('btnToggleAuth').onclick = () => {
+        // AUTH UI TOGGLE
+        const btnToggleAuth = document.getElementById('btnToggleAuth');
+        btnToggleAuth.onclick = () => {
             isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').innerText = isLoginMode ? "Bem-vindo de volta" : "Criar sua conta";
-            document.getElementById('authSubtitle').innerText = isLoginMode ? "Acesse sua inteligência de vendas" : "Comece a gerir seus canais hoje";
-            document.getElementById('btnAuth').innerText = isLoginMode ? "Entrar no Dashboard" : "Criar Minha Conta";
-            document.getElementById('toggleText').innerText = isLoginMode ? "Não tem uma conta?" : "Já possui conta?";
-            document.getElementById('btnToggleAuth').innerText = isLoginMode ? "Criar agora" : "Fazer Login";
+            document.getElementById('authTitle').innerText = isLoginMode ? "Bem-vindo ao Premium" : "Criar sua conta";
+            document.getElementById('btnAuth').innerText = isLoginMode ? "Entrar no Sistema" : "Finalizar Cadastro";
+            document.getElementById('toggleText').innerText = isLoginMode ? "Novo por aqui?" : "Já tem conta?";
+            btnToggleAuth.innerText = isLoginMode ? "Criar Conta" : "Fazer Login";
         };
 
-        // Lógica de Autenticação
+        // LOGIN / REGISTER ACTION
         document.getElementById('btnAuth').onclick = async () => {
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPass').value;
-            if(!email || !pass) return alert("Preencha todos os campos");
+            if(!email || !pass) return alert("Preencha os campos!");
 
             try {
-                if(isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                } else {
-                    await createUserWithEmailAndPassword(auth, email, pass);
-                }
-            } catch (error) {
-                alert("Erro: " + error.message);
-            }
+                if(isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
+                else await createUserWithEmailAndPassword(auth, email, pass);
+            } catch (e) { alert("Erro: " + e.message); }
         };
 
         document.getElementById('btnLogout').onclick = () => signOut(auth);
 
-        // Inicializar Gráficos (Mesma lógica anterior)
-        function initCharts() {
-            const ctxL = document.getElementById('lineChart').getContext('2d');
-            const ctxP = document.getElementById('pieChart').getContext('2d');
-            
-            charts.line = new Chart(ctxL, {
+        // DASHBOARD LOGIC
+        function inicializarGraficos() {
+            const ctxLine = document.getElementById('lineChart').getContext('2d');
+            const ctxPie = document.getElementById('pieChart').getContext('2d');
+
+            charts.line = new Chart(ctxLine, {
                 type: 'line',
                 data: { labels: [], datasets: [
-                    { label: 'iFood', borderColor: '#ef4444', data: [], tension: 0.4 },
-                    { label: 'Keeta', borderColor: '#facc15', data: [], tension: 0.4 },
-                    { label: 'Loja Física', borderColor: '#ffffff', data: [], tension: 0.4 }
+                    { label: 'iFood', borderColor: '#ef4444', data: [], tension: 0.4, borderWidth: 3 },
+                    { label: 'Keeta', borderColor: '#facc15', data: [], tension: 0.4, borderWidth: 3 },
+                    { label: 'Loja Física', borderColor: '#ffffff', data: [], tension: 0.4, borderWidth: 3 }
                 ]},
-                options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { ticks: { color: '#64748b' } }, x: { ticks: { color: '#64748b' } } } }
+                options: { 
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } },
+                    scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } }
+                }
             });
 
-            charts.pie = new Chart(ctxP, {
+            charts.pie = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: { labels: ['iFood', 'Keeta', 'Loja'], datasets: [{ data: [0,0,0], backgroundColor: ['#ef4444', '#facc15', '#ffffff'], borderWidth: 0 }] },
-                options: { cutout: '75%', plugins: { 
-                    legend: { position: 'bottom', labels: { color: '#94a3b8' } },
-                    tooltip: { callbacks: { label: (c) => `${c.label}: ${((c.parsed / c.dataset.data.reduce((a,b)=>a+b,0))*100).toFixed(1)}%` } }
-                } }
+                options: { 
+                    cutout: '75%',
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { color: '#94a3b8' } },
+                        tooltip: { callbacks: { label: (ctx) => {
+                            let total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            return `${ctx.label}: ${((ctx.parsed/total)*100).toFixed(1)}%`;
+                        }}}
+                    }
+                }
             });
         }
 
-        // Salvar e Carregar
         document.getElementById('btnSalvar').onclick = async () => {
             const user = auth.currentUser;
             const mes = document.getElementById('selectMes').value;
@@ -200,8 +238,10 @@
                 label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
                 ifood, keeta, loja
             });
-            alert("Sincronizado!");
             carregarDados();
+            document.getElementById('valIfood').value = '';
+            document.getElementById('valKeeta').value = '';
+            document.getElementById('valLoja').value = '';
         };
 
         async function carregarDados() {
@@ -222,31 +262,52 @@
 
             const ultimo = dadosVendas[dadosVendas.length - 1];
             const total = ultimo.ifood + ultimo.keeta + ultimo.loja;
-            document.getElementById('totalGeral').innerText = `R$ ${total.toLocaleString('pt-BR')}`;
+            document.getElementById('totalGeral').innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
 
             const canais = { 'iFood': ultimo.ifood, 'Keeta': ultimo.keeta, 'Loja Física': ultimo.loja };
             const vencedor = Object.keys(canais).reduce((a, b) => canais[a] > canais[b] ? a : b);
             const bestEl = document.getElementById('bestChannel');
-            bestEl.innerText = vencedor;
-            bestEl.className = `text-2xl font-bold mt-1 ${vencedor === 'iFood' ? 'text-ifood' : vencedor === 'Keeta' ? 'text-keeta' : 'text-loja'}`;
+            bestEl.innerText = total > 0 ? vencedor : "-";
+            bestEl.classList.remove('text-ifood', 'text-keeta', 'text-loja');
+            if(total > 0) {
+                if(vencedor === 'iFood') bestEl.classList.add('text-ifood');
+                else if(vencedor === 'Keeta') bestEl.classList.add('text-keeta');
+                else bestEl.classList.add('text-loja');
+            }
+
+            const crescEl = document.getElementById('crescimentoPorcentagem');
+            if(dadosVendas.length >= 2) {
+                const anterior = dadosVendas[dadosVendas.length - 2];
+                const somaAnt = anterior.ifood + anterior.keeta + anterior.loja;
+                const perc = somaAnt > 0 ? ((total - somaAnt) / somaAnt) * 100 : 0;
+                crescEl.innerText = `${perc > 0 ? '↑' : '↓'} ${Math.abs(perc).toFixed(1)}%`;
+                crescEl.className = `text-3xl font-bold mt-1 ${perc >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
+            }
 
             charts.pie.data.datasets[0].data = [ultimo.ifood, ultimo.keeta, ultimo.loja];
             charts.pie.update();
         }
 
-        // Observador de Login
+        document.getElementById('btnLimpar').onclick = async () => {
+            if(confirm("Apagar todos os dados da nuvem?")) {
+                const user = auth.currentUser;
+                const q = query(collection(db, "usuarios", user.uid, "vendas"));
+                const snapshot = await getDocs(q);
+                const promises = snapshot.docs.map(d => deleteDoc(d.ref));
+                await Promise.all(promises);
+                location.reload();
+            }
+        };
+
         onAuthStateChanged(auth, (user) => {
-            const authDiv = document.getElementById('authContainer');
-            const dashDiv = document.getElementById('mainDashboard');
             if (user) {
-                authDiv.classList.add('hidden');
-                dashDiv.classList.remove('hidden');
-                document.getElementById('userEmailDisplay').innerText = `Conta: ${user.email}`;
-                initCharts();
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('mainDashboard').classList.remove('hidden');
+                inicializarGraficos();
                 carregarDados();
             } else {
-                authDiv.classList.remove('hidden');
-                dashDiv.classList.add('hidden');
+                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('mainDashboard').classList.add('hidden');
             }
         });
     </script>
