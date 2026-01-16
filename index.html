@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Intelligence Premium</title>
+    <title>Sales Intelligence Premium | Cloud</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -13,24 +13,25 @@
         .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: white; width: 100%; outline: none; transition: border 0.2s; }
         .input-field:focus { border-color: #3b82f6; }
         label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
-        
-        /* Classes de cores dinâmicas para o vencedor */
-        .text-ifood { color: #ef4444; } /* Vermelho */
-        .text-keeta { color: #facc15; } /* Amarelo */
-        .text-loja { color: #ffffff; }  /* Branco */
+        .text-ifood { color: #ef4444; }
+        .text-keeta { color: #facc15; }
+        .text-loja { color: #ffffff; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="max-w-6xl mx-auto">
-        <header class="mb-10">
-            <h1 class="text-3xl font-extrabold tracking-tight">Dashboard de Performance</h1>
-            <p class="text-slate-400">Análise dinâmica de canais de venda</p>
+        <header class="mb-10 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight">Dashboard Pro</h1>
+                <p class="text-slate-400">Cloud Sync Ativo</p>
+            </div>
+            <div id="userStatus" class="text-xs text-slate-500 font-bold uppercase">Aguardando Conexão...</div>
         </header>
 
         <section class="glass-card p-6 rounded-2xl mb-8 border-t-4 border-blue-500">
             <h2 class="text-sm font-bold mb-6 text-blue-400 flex items-center gap-2">
-                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LANÇAMENTO DE RESULTADOS
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LANÇAMENTO EM NUVEM
             </h2>
             
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -67,27 +68,24 @@
                 </div>
             </div>
             <div class="flex gap-3 mt-6">
-                <button onclick="adicionarDados()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none">
-                    Salvar Registro
-                </button>
-                <button onclick="limparTudo()" class="text-slate-500 hover:text-red-400 text-sm font-semibold px-4 underline">
-                    Limpar Histórico
+                <button id="btnSalvar" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-all flex-1 md:flex-none">
+                    Salvar na Nuvem
                 </button>
             </div>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Faturamento do Período</span>
-                <div id="totalGeral" class="text-3xl font-bold mt-1 text-white">R$ 0,00</div>
+                <span class="text-slate-400 text-xs font-bold uppercase">Faturamento Período</span>
+                <div id="totalGeral" class="text-3xl font-bold mt-1">R$ 0,00</div>
             </div>
             <div class="glass-card p-6 rounded-2xl border-b-4 border-slate-700">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Canal com Maior Venda</span>
-                <div id="bestChannel" class="text-2xl font-bold mt-1 transition-colors duration-300">-</div>
+                <span class="text-slate-400 text-xs font-bold uppercase">Canal Líder</span>
+                <div id="bestChannel" class="text-2xl font-bold mt-1">-</div>
             </div>
             <div class="glass-card p-6 rounded-2xl">
-                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Crescimento vs Anterior</span>
-                <div id="crescimentoPorcentagem" class="text-3xl font-bold mt-1 text-slate-500">--</div>
+                <span class="text-slate-400 text-xs font-bold uppercase">Crescimento %</span>
+                <div id="crescimentoPorcentagem" class="text-3xl font-bold mt-1">--</div>
             </div>
         </div>
 
@@ -97,86 +95,93 @@
                 <canvas id="lineChart" height="150"></canvas>
             </div>
             <div class="glass-card p-6 rounded-2xl">
-                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">SHARE POR CANAL</h3>
+                <h3 class="text-sm font-bold mb-6 text-slate-300 uppercase tracking-widest">Share por Canal</h3>
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
     </div>
 
-    <script>
-        let dadosVendas = JSON.parse(localStorage.getItem('vendas_db')) || [];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBe16h9VH99V2cF-pJQVo5SJPha6uWsWJ0",
+            authDomain: "dash-4c84d.firebaseapp.com",
+            projectId: "dash-4c84d",
+            storageBucket: "dash-4c84d.firebasestorage.app",
+            messagingSenderId: "183916342443",
+            appId: "1:183916342443:web:df4b375cc1978144f91bee"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let dadosVendas = [];
         let charts = {};
 
-        function inicializarGraficos() {
-            const ctxLine = document.getElementById('lineChart').getContext('2d');
-            const ctxPie = document.getElementById('pieChart').getContext('2d');
+        // Inicializar Gráficos
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
 
-            charts.line = new Chart(ctxLine, {
-                type: 'line',
-                data: { labels: [], datasets: [
-                    { label: 'iFood', borderColor: '#ef4444', data: [], tension: 0.4, fill: false, borderWidth: 3 },
-                    { label: 'Keeta', borderColor: '#facc15', data: [], tension: 0.4, fill: false, borderWidth: 3 },
-                    { label: 'Loja Física', borderColor: '#ffffff', data: [], tension: 0.4, fill: false, borderWidth: 3 }
-                ]},
-                options: { 
-                    responsive: true,
-                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } },
-                    scales: { 
-                        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
-                        x: { grid: { display: false }, ticks: { color: '#64748b' } }
-                    }
-                }
-            });
+        charts.line = new Chart(ctxLine, {
+            type: 'line',
+            data: { labels: [], datasets: [
+                { label: 'iFood', borderColor: '#ef4444', data: [], tension: 0.4, borderWidth: 3 },
+                { label: 'Keeta', borderColor: '#facc15', data: [], tension: 0.4, borderWidth: 3 },
+                { label: 'Loja Física', borderColor: '#ffffff', data: [], tension: 0.4, borderWidth: 3 }
+            ]},
+            options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { ticks: { color: '#64748b' } }, x: { ticks: { color: '#64748b' } } } }
+        });
 
-            charts.pie = new Chart(ctxPie, {
-                type: 'doughnut',
-                data: { labels: ['iFood', 'Keeta', 'Loja'], datasets: [{ data: [0,0,0], backgroundColor: ['#ef4444', '#facc15', '#ffffff'], borderWidth: 0 }] },
-                options: { 
-                    cutout: '75%',
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 20 } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    let value = context.parsed;
-                                    let total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    let percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                                    return `${label}: ${percentage}%`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+        charts.pie = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: { labels: ['iFood', 'Keeta', 'Loja'], datasets: [{ data: [0,0,0], backgroundColor: ['#ef4444', '#facc15', '#ffffff'], borderWidth: 0 }] },
+            options: { cutout: '75%', plugins: { 
+                legend: { position: 'bottom', labels: { color: '#94a3b8' } },
+                tooltip: { callbacks: { label: (c) => `${c.label}: ${((c.parsed / c.dataset.data.reduce((a,b)=>a+b,0))*100).toFixed(1)}%` } }
+            } }
+        });
 
-            if(dadosVendas.length > 0) atualizarInterface();
-        }
+        // Salvar Dados
+        document.getElementById('btnSalvar').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) return alert("Acesso negado. Por favor, faça login.");
 
-        function adicionarDados() {
             const mes = document.getElementById('selectMes').value;
             const ano = document.getElementById('selectAno').value;
             const ifood = parseFloat(document.getElementById('valIfood').value) || 0;
             const keeta = parseFloat(document.getElementById('valKeeta').value) || 0;
             const loja = parseFloat(document.getElementById('valLoja').value) || 0;
-
             const periodoKey = `${ano}-${mes}`;
-            const labelFormatado = `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`;
 
-            const index = dadosVendas.findIndex(d => d.key === periodoKey);
-            const objetoDados = { key: periodoKey, label: labelFormatado, ifood, keeta, loja };
+            try {
+                await setDoc(doc(db, "usuarios", user.uid, "vendas", periodoKey), {
+                    key: periodoKey,
+                    label: `${document.getElementById('selectMes').options[document.getElementById('selectMes').selectedIndex].text}/${ano}`,
+                    ifood, keeta, loja
+                });
+                alert("Dados sincronizados!");
+                carregarDados();
+            } catch (e) { alert("Erro ao salvar!"); }
+        });
 
-            if(index > -1) dadosVendas[index] = objetoDados;
-            else dadosVendas.push(objetoDados);
-
-            dadosVendas.sort((a, b) => a.key.localeCompare(b.key));
+        // Carregar Dados
+        async function carregarDados() {
+            const user = auth.currentUser;
+            if (!user) return;
             
-            localStorage.setItem('vendas_db', JSON.stringify(dadosVendas));
+            const q = query(collection(db, "usuarios", user.uid, "vendas"), orderBy("key"));
+            const snapshot = await getDocs(q);
+            dadosVendas = snapshot.docs.map(doc => doc.data());
             atualizarInterface();
-            limparFormulario();
         }
 
         function atualizarInterface() {
+            if (dadosVendas.length === 0) return;
+            
             const labels = dadosVendas.map(d => d.label);
             charts.line.data.labels = labels;
             charts.line.data.datasets[0].data = dadosVendas.map(d => d.ifood);
@@ -184,55 +189,29 @@
             charts.line.data.datasets[2].data = dadosVendas.map(d => d.loja);
             charts.line.update();
 
-            const ultimoRegistro = dadosVendas[dadosVendas.length - 1];
-            const faturamentoPeriodo = ultimoRegistro.ifood + ultimoRegistro.keeta + ultimoRegistro.loja;
+            const ultimo = dadosVendas[dadosVendas.length - 1];
+            const total = ultimo.ifood + ultimo.keeta + ultimo.loja;
+            document.getElementById('totalGeral').innerText = `R$ ${total.toLocaleString('pt-BR')}`;
 
-            document.getElementById('totalGeral').innerText = `R$ ${faturamentoPeriodo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-
-            // Lógica de Canal com Maior Venda e Cor Dinâmica
-            const canais = { 'iFood': ultimoRegistro.ifood, 'Keeta': ultimoRegistro.keeta, 'Loja Física': ultimoRegistro.loja };
+            const canais = { 'iFood': ultimo.ifood, 'Keeta': ultimo.keeta, 'Loja Física': ultimo.loja };
             const vencedor = Object.keys(canais).reduce((a, b) => canais[a] > canais[b] ? a : b);
-            
-            const bestChannelEl = document.getElementById('bestChannel');
-            bestChannelEl.innerText = faturamentoPeriodo > 0 ? vencedor : "-";
-            
-            // Remover classes de cores anteriores
-            bestChannelEl.classList.remove('text-ifood', 'text-keeta', 'text-loja');
-            
-            // Adicionar cor baseada no vencedor
-            if(faturamentoPeriodo > 0) {
-                if(vencedor === 'iFood') bestChannelEl.classList.add('text-ifood');
-                else if(vencedor === 'Keeta') bestChannelEl.classList.add('text-keeta');
-                else if(vencedor === 'Loja Física') bestChannelEl.classList.add('text-loja');
-            }
+            const bestEl = document.getElementById('bestChannel');
+            bestEl.innerText = vencedor;
+            bestEl.className = `text-2xl font-bold mt-1 ${vencedor === 'iFood' ? 'text-ifood' : vencedor === 'Keeta' ? 'text-keeta' : 'text-loja'}`;
 
-            const crescEl = document.getElementById('crescimentoPorcentagem');
-            if(dadosVendas.length >= 2) {
-                const anterior = dadosVendas[dadosVendas.length - 2];
-                const somaAnterior = anterior.ifood + anterior.keeta + anterior.loja;
-                const perc = somaAnterior > 0 ? ((faturamentoPeriodo - somaAnterior) / somaAnterior) * 100 : 0;
-                crescEl.innerText = `${perc > 0 ? '↑' : '↓'} ${Math.abs(perc).toFixed(1)}%`;
-                crescEl.className = `text-3xl font-bold mt-1 ${perc >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
-            }
-
-            charts.pie.data.datasets[0].data = [ultimoRegistro.ifood, ultimoRegistro.keeta, ultimoRegistro.loja];
+            charts.pie.data.datasets[0].data = [ultimo.ifood, ultimo.keeta, ultimo.loja];
             charts.pie.update();
         }
 
-        function limparFormulario() {
-            document.getElementById('valIfood').value = '';
-            document.getElementById('valKeeta').value = '';
-            document.getElementById('valLoja').value = '';
-        }
-
-        function limparTudo() {
-            if(confirm("Deseja apagar todo o histórico de lançamentos?")) {
-                localStorage.removeItem('vendas_db');
-                location.reload();
+        onAuthStateChanged(auth, (user) => {
+            const status = document.getElementById('userStatus');
+            if (user) {
+                status.innerText = `Online: ${user.email}`;
+                carregarDados();
+            } else {
+                status.innerText = "Offline - Login Necessário";
             }
-        }
-
-        window.onload = inicializarGraficos;
+        });
     </script>
 </body>
 </html>
